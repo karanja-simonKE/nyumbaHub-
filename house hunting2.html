@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>nyumbaHub — Discover, Connect, Move</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --primary: #0077b6;
+      --secondary: #023e8a;
+      --light: #f1f5f9;
+      --dark: #1e293b;
+      --accent: #48cae4;
+      --radius: 12px;
+      --transition: 0.3s;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background: var(--light);
+      color: var(--dark);
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    header {
+      background: var(--secondary);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header h1 { font-size: 1.8rem; font-weight: 700; }
+
+    header p { font-size: 0.9rem; opacity: 0.9; }
+
+    nav a {
+      margin: 0 0.75rem;
+      color: white;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    nav a:hover { color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      padding: 4rem 2rem;
+      background: url('https://images.unsplash.com/photo-1599423300746-b62533397364?fit=crop&w=1200&h=400') center/cover no-repeat;
+      color: white;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+    }
+
+    .hero h2 {
+      position: relative;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .search-filters {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      z-index: 1;
+    }
+
+    .search-filters input,
+    .search-filters select,
+    .search-filters button {
+      padding: 0.7rem 1rem;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 1rem;
+    }
+
+    .search-filters input, .search-filters select {
+      width: 180px;
+    }
+
+    .search-filters button {
+      background: var(--primary);
+      color: white;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .search-filters button:hover { background: var(--accent); }
+
+    /* PROPERTY GRID */
+    .property-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      transition: transform var(--transition), box-shadow var(--transition);
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.25);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .card-content { padding: 1rem; }
+
+    .card-content h3 { margin-bottom: 0.5rem; font-size: 1.2rem; }
+
+    .card-content p { font-size: 0.9rem; color: #555; }
+
+    /* MODAL */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .modal.active { display: flex; }
+
+    .modal-content {
+      background: white;
+      border-radius: var(--radius);
+      max-width: 800px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      padding: 1.5rem;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal-content img {
+      width: 100%;
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--dark);
+    }
+
+    @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+    /* SECTIONS */
+    section {
+      padding: 4rem 2rem;
+    }
+
+    #about, #contact, #help, #logout {
+      border-radius: var(--radius);
+      background: white;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+      padding: 2rem;
+    }
+
+    h2 { margin-bottom: 1rem; font-size: 2rem; }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: var(--secondary);
+      color: white;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 600px) {
+      nav { width: 100%; text-align: center; margin-top: 0.5rem; }
+      .search-filters { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <div>
+      <h1>nyumbaHub</h1>
+      <p>Discover, Connect, Move</p>
+    </div>
+    <nav>
+      <a href="#propertyGrid">Home</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a href="#help">Help</a>
+      <a href="#logout">Logout</a>
+    </nav>
+  </header>
+
+  <!-- HERO / SEARCH -->
+  <section class="hero">
+    <h2>Find your next home</h2>
+    <div class="search-filters">
+      <input type="text" id="searchText" placeholder="Search by name or location" />
+      <select id="filterType">
+        <option value="">All Types</option>
+        <option>Studio</option>
+        <option>1BR</option>
+        <option>2BR</option>
+        <option>3BR</option>
+      </select>
+      <input type="number" id="minPrice" placeholder="Min Price" />
+      <input type="number" id="maxPrice" placeholder="Max Price" />
+      <button id="filterBtn">Filter</button>
+      <button id="clearBtn">Clear</button>
+    </div>
+  </section>
+
+  <!-- PROPERTY GRID -->
+  <section id="propertyGrid" class="property-grid" aria-live="polite"></section>
+
+  <!-- MODAL -->
+  <div id="propertyModal" class="modal" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <button class="close-modal" aria-label="Close">&times;</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- ADDITIONAL SECTIONS -->
+  <section id="about">
+    <h2>About Us</h2>
+    <p>nyumbaHub is Kenya's leading platform connecting renters with their dream homes. Explore apartments, studios, and family houses with ease.</p>
+  </section>
+
+  <section id="contact">
+    <h2>Contact Us</h2>
+    <p>Email: info@nyumbahub.co.ke</p>
+    <p>Phone: +254 700 000 000</p>
+    <p>Address: Nairobi, Kenya</p>
+  </section>
+
+  <section id="help">
+    <h2>Help & FAQ</h2>
+    <p>Need assistance finding your dream home? Check our FAQ or reach out via our contact page.</p>
+  </section>
+
+  <section id="logout">
+    <h2>Logout</h2>
+    <p>Click <a href="#">here</a> to safely log out from your account.</p>
+  </section>
+
+  <footer>&copy; 2025 nyumbaHub. All rights reserved.</footer>
+
+  <script>
+    const properties = [
+      {
+        id: 1,
+        name: "Sunny Apartment",
+        location: "Nairobi, Westlands",
+        price: 55000,
+        size: "85 m²",
+        bedrooms: 2,
+        bathrooms: 1,
+        type: "2BR",
+        description: "A bright and cozy 2-bedroom apartment close to shopping centers.",
+        images: [
+          "https://images.unsplash.com/photo-1560184897-e45f2d2c41a7?crop=entropy&cs=tinysrgb&fit=max&w=800&h=600",
+          "https://images.unsplash.com/photo-1570129477492-45c003edd2be?crop=entropy&cs=tinysrgb&fit=max&w=800&h=600",
+          "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?crop=entropy&cs=tinysrgb&fit=max&w=800&h=600"
+        ],
+        amenities: ["WiFi", "Parking", "Balcony"]
+      },
+      {
+        id: 2,
+        name: "Modern Studio",
+        location: "Nakuru, CBD",
+        price: 30000,
+        size: "45 m²",
+        bedrooms: 1,
+        bathrooms: 1,
+        type: "Studio",
+        description: "Perfect for singles or students — compact and modern studio space.",
+        images: [
+          "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?crop=entropy&cs=tinysrgb&fit=max&w=800&h=600",
+          "https://images.unsplash.com/photo-1572120360610-d971b9f6a02e?crop=entropy&cs=tinysrgb&fit=max&w=800&h=600",
+          "https://images.unsplash.com/photo-1598928506311-7c1c9901b237?crop=entropy&cs=tinysrgb&fit=max&w=800&h=600"
+        ],
+        amenities: ["Security", "Elevator", "24h Water"]
+      },
+      {
+        id: 3,
+        name: "Family House",
+        location: "Mombasa, Nyali",
+        price: 120000,
+        size: "200 m²",
+        bedrooms: 3,
+        bathrooms: 2,
+        type: "3BR",
+        description: "Spacious family house with a private garden and sea breeze.",
+        images: [
+          "https://images.unsplash.com/photo-1599423300746-b62533397364?crop=entropy&cs=tinysrgb&fit=max&w=800&h=600",
+          "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?crop=entropy&cs=tinysrgb&fit=max&w=800&h=600",
+          "https://images.unsplash.com/photo-1570129477492-45c003edd2be?crop=entropy&cs=tinysrgb&fit=max&w=800&h=600"
+        ],
+        amenities: ["Garden", "Garage", "Air Conditioning"]
+      },
+      {
+        id: 4,
+        name: "Cozy One-Bedroom",
+        location: "Kisumu, Milimani",
+        price: 45000,
+        size: "70 m²",
+        bedrooms: 1,
+        bathrooms: 1,
+        type: "1BR",
+        description: "Charming 1-bedroom apartment with a lovely view of Lake Victoria.",
+        images: [
+          "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?crop=entropy&cs=tinysrgb&fit=max&w=800&h=600",
+          "https://images.unsplash.com/photo-1570129477492-45c003edd2be?crop=entropy&cs=tinysrgb&fit=max&w=800&h=600",
+          "https://images.unsplash.com/photo-1560184897-e45f2d2c41a7?crop=entropy&cs=tinysrgb&fit=max&w=800&h=600"
+        ],
+        amenities: ["View", "WiFi", "Parking"]
+      }
+    ];
+
+    const grid = document.getElementById("propertyGrid");
+
+    function renderProperties(list) {
+      grid.innerHTML = "";
+      if (list.length === 0) {
+        grid.innerHTML = "<p style='text-align:center;width:100%'>No properties match your search.</p>";
+        return;
+      }
+      list.forEach((prop) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.tabIndex = 0;
+        card.innerHTML = `
+          <img src="${prop.images[0]}" alt="Photo of ${prop.name}" />
+          <div class="card-content">
+            <h3>${prop.name}</h3>
+            <p>${prop.location}</p>
+            <p><strong>KES ${prop.price.toLocaleString()}</strong> /month</p>
+          </div>
+        `;
+        card.addEventListener("click", () => openModal(prop));
+        grid.appendChild(card);
+      });
+    }
+
+    document.getElementById("filterBtn").addEventListener("click", applyFilters);
+    document.getElementById("clearBtn").addEventListener("click", () => {
+      document.getElementById("searchText").value = "";
+      document.getElementById("filterType").value = "";
+      document.getElementById("minPrice").value = "";
+      document.getElementById("maxPrice").value = "";
+      renderProperties(properties);
+    });
+
+    function applyFilters() {
+      const text = document.getElementById("searchText").value.toLowerCase();
+      const type = document.getElementById("filterType").value;
+      const min = parseInt(document.getElementById("minPrice").value) || 0;
+      const max = parseInt(document.getElementById("maxPrice").value) || Infinity;
+
+      const filtered = properties.filter(
+        (p) =>
+          (p.name.toLowerCase().includes(text) ||
+           p.location.toLowerCase().includes(text)) &&
+          (type === "" || p.type === type) &&
+          p.price >= min &&
+          p.price <= max
+      );
+      renderProperties(filtered);
+    }
+
+    const modal = document.getElementById("propertyModal");
+    const modalBody = document.getElementById("modalBody");
+
+    function openModal(prop) {
+      modal.classList.add("active");
+      modalBody.innerHTML = `
+        <h2>${prop.name}</h2>
+        <p>${prop.location}</p>
+        <div>
+          ${prop.images.map(img => `<img src="${img}" alt="Image of ${prop.name}" />`).join("")}
+        </div>
+        <p><strong>Price:</strong> KES ${prop.price.toLocaleString()} /month</p>
+        <p><strong>Size:</strong> ${prop.size}</p>
+        <p><strong>Bedrooms:</strong> ${prop.bedrooms}, <strong>Bathrooms:</strong> ${prop.bathrooms}</p>
+        <p>${prop.description}</p>
+        <p><strong>Amenities:</strong> ${prop.amenities.join(", ")}</p>
+        <button style="padding:0.7rem 1rem;background:var(--primary);color:white;border:none;border-radius:var(--radius);cursor:pointer;">Contact Landlord</button>
+      `;
+    }
+
+    document.querySelector(".close-modal").addEventListener("click", () => modal.classList.remove("active"));
+    modal.addEventListener("click", (e) => { if(e.target === modal) modal.classList.remove("active"); });
+    document.addEventListener("keydown", (e) => { if(e.key === "Escape") modal.classList.remove("active"); });
+
+    renderProperties(properties);
+  </script>
+</body>
+</html>
